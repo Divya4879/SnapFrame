@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Snapshot - SnapFrame</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="snapshots.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { 
+                        'inter': ['Inter', 'sans-serif'],
+                        'mono': ['JetBrains Mono', 'monospace'],
+                        'serif': ['Playfair Display', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); }
+        .dark .gradient-bg { background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4c1d95 100%); }
+        
+        .preview-card {
+            min-height: 400px;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+        
+        .preview-card .code-editor {
+            text-align: left;
+        }
+        
+        /* Theme Styles */
+        .theme-ocean { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .theme-sunset { background: linear-gradient(135deg, #f4c989 0%, #f5576c 100%); color: white; }
+        .theme-forest { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; }
+        .theme-midnight { background: linear-gradient(135deg, #2c3e50 0%, #000000 100%); color: white; }
+        .theme-minimal { background: #ffffff; color: #1f2937; border: 2px solid #e5e7eb; }
+        
+        .theme-love {
+            background-image: url('public/love.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .theme-love #previewContent {
+            background: rgba(252, 231, 243, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            color: #ec4899;
+            text-shadow: none;
+        }
+        
+        .theme-snow {
+            background-image: url('public/snowfall.gif');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .theme-snow #previewContent {
+            background: rgba(219, 234, 254, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            color: #1e40af;
+            text-shadow: none;
+        }
+        
+        .code-editor {
+            border-radius: 12px;
+            overflow: hidden;
+            font-family: 'JetBrains Mono', monospace;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        /* VS Code Dark Theme */
+        .code-editor {
+            background: #2d3748;
+        }
+        
+        .code-editor.github-theme {
+            background: #0d1117;
+        }
+        
+        .code-editor.monokai-theme {
+            background: #272822;
+        }
+        
+        .code-editor.dracula-theme {
+            background: #282a36;
+        }
+        
+        .code-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .code-editor .code-header {
+            background: #1a202c;
+        }
+        
+        .code-editor.github-theme .code-header {
+            background: #010409;
+        }
+        
+        .code-editor.monokai-theme .code-header {
+            background: #1e1f1c;
+        }
+        
+        .code-editor.dracula-theme .code-header {
+            background: #21222c;
+        }
+        
+        .code-dots {
+            display: flex;
+            gap: 6px;
+        }
+        
+        .code-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .code-dot.red { background: #ff5f56; }
+        .code-dot.yellow { background: #ffbd2e; }
+        .code-dot.green { background: #27ca3f; }
+        
+        .code-lang {
+            color: #a0aec0;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .code-content {
+            padding: 20px;
+            font-size: 14px;
+            line-height: 1.5;
+            overflow-x: auto;
+            text-align: left;
+        }
+        
+        .code-content pre {
+            margin: 0;
+            padding: 0;
+            white-space: pre;
+            text-align: left;
+        }
+        
+        .code-content code {
+            font-family: 'JetBrains Mono', monospace;
+            white-space: pre;
+            text-align: left;
+            display: block;
+        }
+        
+        .code-editor .code-content {
+            background: #2d3748;
+            color: #e2e8f0;
+        }
+        
+        .code-editor.github-theme .code-content {
+            background: #0d1117;
+            color: #c9d1d9;
+        }
+        
+        .code-editor.monokai-theme .code-content {
+            background: #272822;
+            color: #f8f8f2;
+        }
+        
+        .code-editor.dracula-theme .code-content {
+            background: #282a36;
+            color: #f8f8f2;
+        }
+        
+        /* Override Prism styles for better appearance */
+        .code-content pre {
+            margin: 0;
+            background: transparent !important;
+            padding: 0 !important;
+            border-radius: 0 !important;
+        }
+        
+        .code-content code {
+            background: transparent !important;
+            color: inherit !important;
+            font-family: 'JetBrains Mono', monospace !important;
+        }
+
+        
+        .poem-elegant { font-family: 'Playfair Display', serif; font-style: italic; line-height: 1.8; font-weight: bold; }
+        .quote-modern { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 1.5rem; line-height: 1.6; }
+        .code-mono { font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.5; }
+        
+        .nav-blur { backdrop-filter: blur(12px); background: rgba(255, 255, 255, 0.8); }
+        .dark .nav-blur { background: rgba(15, 23, 42, 0.8); }
+    </style>
+</head>
+<body class="font-inter bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 transition-colors duration-300 min-h-screen">
+    <!-- Header -->
+    <header class="fixed w-full top-0 z-50 nav-blur border-b border-gray-200/20 dark:border-slate-700/50">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-camera text-white text-lg"></i>
+                    </div>
+                    <a href="index.html" class="text-2xl font-bold text-gray-900 dark:text-white">SnapFrame</a>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle" class="p-2 rounded-lg bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-700 transition">
+                        <i class="fas fa-moon dark:hidden"></i>
+                        <i class="fas fa-sun hidden dark:inline"></i>
+                    </button>
+                    
+                    <a href="index.html" class="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+                        <i class="fas fa-home mr-2"></i>Home
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="pt-20 min-h-screen">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="text-center mb-12">
+                <h1 class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 mb-6">Create Your Snapshot</h1>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">Transform your content into beautiful shareable images with professional styling</p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Input Panel -->
+                <div class="bg-white/80 backdrop-blur-sm dark:bg-slate-800/80 rounded-3xl p-8 shadow-2xl border border-white/20 dark:border-slate-700/50">
+                    <h2 class="text-3xl font-black mb-8 text-gray-900 dark:text-white bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Content & Settings</h2>
+                    
+                    <!-- Content Type Selection -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Content Type</label>
+                        <div class="grid grid-cols-3 gap-3">
+                            <label class="cursor-pointer">
+                                <input type="radio" name="contentType" value="quote" class="sr-only" checked>
+                                <div class="content-type-btn p-4 rounded-xl border-2 border-gray-200 dark:border-slate-600 hover:border-indigo-500 transition text-center">
+                                    <i class="fas fa-quote-left text-2xl text-indigo-500 mb-2"></i>
+                                    <div class="font-semibold text-gray-900 dark:text-white">Quote</div>
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="contentType" value="poem" class="sr-only">
+                                <div class="content-type-btn p-4 rounded-xl border-2 border-gray-200 dark:border-slate-600 hover:border-indigo-500 transition text-center">
+                                    <i class="fas fa-feather-alt text-2xl text-purple-500 mb-2"></i>
+                                    <div class="font-semibold text-gray-900 dark:text-white">Poem</div>
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="contentType" value="code" class="sr-only">
+                                <div class="content-type-btn p-4 rounded-xl border-2 border-gray-200 dark:border-slate-600 hover:border-indigo-500 transition text-center">
+                                    <i class="fas fa-code text-2xl text-green-500 mb-2"></i>
+                                    <div class="font-semibold text-gray-900 dark:text-white">Code</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Language Selection (for code) -->
+                    <div id="languageSection" class="mb-6 hidden">
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Programming Language</label>
+                        <select id="languageSelect" class="w-full p-3 rounded-xl border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white">
+                            <option value="javascript">JavaScript</option>
+                            <option value="python">Python</option>
+                            <option value="cpp">C++</option>
+                            <option value="go">Go</option>
+                            <option value="typescript">TypeScript</option>
+                            <option value="html">HTML</option>
+                            <option value="css">CSS</option>
+                            <option value="java">Java</option>
+                            <option value="php">PHP</option>
+                            <option value="ruby">Ruby</option>
+                            <option value="swift">Swift</option>
+                            <option value="kotlin">Kotlin</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <!-- Content Input -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Your Content</label>
+                        <textarea id="contentInput" 
+                                  placeholder="Enter your quote, poem, or code snippet here..."
+                                  class="w-full h-40 p-4 rounded-xl border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white resize-none font-mono text-sm"
+                                  spellcheck="false"></textarea>
+                    </div>
+
+                    <!-- Theme Selection -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Theme</label>
+                        <div id="themeGrid" class="grid grid-cols-2 gap-3">
+                            <!-- Themes will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Download Button -->
+                    <button id="downloadBtn" class="w-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white py-4 rounded-xl font-bold text-lg hover:from-indigo-600 hover:to-purple-700 transition shadow-lg">
+                        <i class="fas fa-download mr-2"></i>
+                        Download Image
+                    </button>
+                </div>
+
+                <!-- Preview Panel -->
+                <div class="bg-white/80 backdrop-blur-sm dark:bg-slate-800/80 rounded-3xl p-8 shadow-2xl border border-white/20 dark:border-slate-700/50">
+                    <h2 class="text-3xl font-black mb-8 text-gray-900 dark:text-white bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Preview</h2>
+                    
+                    <div class="flex justify-center">
+                        <div id="previewContainer" class="preview-card theme-minimal quote-modern">
+                            <div id="previewContent" class="text-center">
+                                <p>Enter your content to see the preview...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Theme configurations
+        const themes = {
+            quote: [
+                { name: 'Minimal', class: 'theme-minimal quote-modern', preview: '#f8fafc' },
+                { name: 'Ocean', class: 'theme-ocean quote-modern', preview: '#667eea' },
+                { name: 'Sunset', class: 'theme-sunset quote-modern', preview: '#f4c989' },
+                { name: 'Forest', class: 'theme-forest quote-modern', preview: '#11998e' },
+                { name: 'Midnight', class: 'theme-midnight quote-modern', preview: '#2c3e50' },
+                { name: 'Love', class: 'theme-love quote-modern', preview: '#ff69b4' },
+                { name: 'Snow', class: 'theme-snow quote-modern', preview: '#3b82f6' }
+            ],
+            poem: [
+                { name: 'Elegant', class: 'theme-minimal poem-elegant', preview: '#f8fafc' },
+                { name: 'Ocean', class: 'theme-ocean poem-elegant', preview: '#667eea' },
+                { name: 'Sunset', class: 'theme-sunset poem-elegant', preview: '#f4c989' },
+                { name: 'Forest', class: 'theme-forest poem-elegant', preview: '#11998e' },
+                { name: 'Midnight', class: 'theme-midnight poem-elegant', preview: '#2c3e50' },
+                { name: 'Love', class: 'theme-love poem-elegant', preview: '#ff69b4' },
+                { name: 'Snow', class: 'theme-snow poem-elegant', preview: '#3b82f6' }
+            ],
+            code: [
+                { name: 'VS Code Dark', class: 'code-editor', preview: '#2d3748' },
+                { name: 'GitHub Dark', class: 'code-editor github-theme', preview: '#0d1117' },
+                { name: 'Monokai', class: 'code-editor monokai-theme', preview: '#272822' },
+                { name: 'Dracula', class: 'code-editor dracula-theme', preview: '#282a36' }
+            ]
+        };
+
+        let currentContentType = 'quote';
+        let currentTheme = themes.quote[0];
+
+        // DOM Elements
+        const contentTypeInputs = document.querySelectorAll('input[name="contentType"]');
+        const languageSection = document.getElementById('languageSection');
+        const languageSelect = document.getElementById('languageSelect');
+        const contentInput = document.getElementById('contentInput');
+        const themeGrid = document.getElementById('themeGrid');
+        const previewContainer = document.getElementById('previewContainer');
+        const previewContent = document.getElementById('previewContent');
+        const downloadBtn = document.getElementById('downloadBtn');
+
+        // Initialize
+        updateThemes();
+        updatePreview();
+
+        // Event Listeners
+        contentTypeInputs.forEach(input => {
+            input.addEventListener('change', (e) => {
+                currentContentType = e.target.value;
+                languageSection.classList.toggle('hidden', currentContentType !== 'code');
+                updateThemes();
+                updatePreview();
+            });
+        });
+
+        languageSelect.addEventListener('change', updatePreview);
+        contentInput.addEventListener('input', updatePreview);
+
+        // Theme selection
+        function updateThemes() {
+            const currentThemes = themes[currentContentType];
+            themeGrid.innerHTML = '';
+            
+            currentThemes.forEach((theme, index) => {
+                const themeBtn = document.createElement('button');
+                themeBtn.className = `theme-btn p-3 rounded-lg border-2 transition ${index === 0 ? 'border-indigo-500' : 'border-gray-200 dark:border-slate-600'}`;
+                themeBtn.innerHTML = `
+                    <div class="w-full h-8 rounded mb-2" style="background: ${theme.preview}"></div>
+                    <div class="text-sm font-semibold text-gray-900 dark:text-white">${theme.name}</div>
+                `;
+                
+                themeBtn.addEventListener('click', () => {
+                    document.querySelectorAll('.theme-btn').forEach(btn => {
+                        btn.classList.remove('border-indigo-500');
+                        btn.classList.add('border-gray-200', 'dark:border-slate-600');
+                    });
+                    themeBtn.classList.add('border-indigo-500');
+                    themeBtn.classList.remove('border-gray-200', 'dark:border-slate-600');
+                    
+                    currentTheme = theme;
+                    updatePreview();
+                });
+                
+                themeGrid.appendChild(themeBtn);
+            });
+            
+            currentTheme = currentThemes[0];
+        }
+
+        // Update preview
+        function updatePreview() {
+            const content = contentInput.value.trim();
+            
+            if (!content) {
+                previewContent.innerHTML = '<p class="text-gray-400">Enter your content to see the preview...</p>';
+                previewContainer.className = 'preview-card theme-minimal';
+                return;
+            }
+
+            previewContainer.className = `preview-card ${currentTheme.class}`;
+            
+            if (currentContentType === 'code') {
+                const language = languageSelect.value;
+                const langMap = {
+                    'javascript': 'js',
+                    'typescript': 'ts',
+                    'cpp': 'cpp',
+                    'html': 'markup',
+                    'other': 'text'
+                };
+                
+                const langDisplay = language.toUpperCase();
+                
+                previewContent.innerHTML = `
+                    <div class="code-editor ${currentTheme.class.includes('github') ? 'github-theme' : ''} ${currentTheme.class.includes('monokai') ? 'monokai-theme' : ''} ${currentTheme.class.includes('dracula') ? 'dracula-theme' : ''}">
+                        <div class="code-header">
+                            <div class="code-dots">
+                                <div class="code-dot red"></div>
+                                <div class="code-dot yellow"></div>
+                                <div class="code-dot green"></div>
+                            </div>
+                            <div class="code-lang">${langDisplay}</div>
+                        </div>
+                        <div class="code-content">
+                            <pre><code>${content}</code></pre>
+                        </div>
+                    </div>
+                `;
+            } else if (currentContentType === 'poem') {
+                // Keep symbols, just add line breaks after punctuation
+                const formattedPoem = content.replace(/([,.!?;:])/g, '$1<br>');
+                
+                // Check word count (limit 150 words per image)
+                const wordCount = content.split(/\s+/).length;
+                if (wordCount > 150) {
+                    const chunks = splitPoemIntoChunks(content);
+                    let previewHTML = '';
+                    
+                    chunks.forEach((chunk, index) => {
+                        previewHTML += `
+                            <div class="poem-chunk mb-8 p-6 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl">
+                                <div class="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-3">Image ${index + 1} of ${chunks.length}</div>
+                                <div>${chunk}</div>
+                            </div>
+                        `;
+                    });
+                    
+                    previewContent.innerHTML = previewHTML;
+                } else {
+                    previewContent.innerHTML = formattedPoem;
+                }
+            } else {
+                // Quote word limit ~30 words
+                const wordCount = content.split(/\s+/).length;
+                if (wordCount > 30) {
+                    previewContent.innerHTML = `
+                        <div class="mb-4">"${content}"</div>
+                        <div class="text-sm opacity-75 mt-4">
+                            <i class="fas fa-info-circle mr-1"></i>
+                            Long quote (${wordCount} words). Consider shortening for better readability.
+                        </div>
+                    `;
+                } else {
+                    previewContent.innerHTML = `"${content}"`;
+                }
+            }
+        }
+
+        // Split code into chunks of max 50 lines
+        function splitCodeIntoChunks(content) {
+            const lines = content.split('\n');
+            const chunks = [];
+            
+            for (let i = 0; i < lines.length; i += 50) {
+                const chunk = lines.slice(i, i + 50).join('\n');
+                chunks.push(chunk);
+            }
+            
+            return lines;
+        }
+
+        // Split poem into chunks of max 150 words
+        function splitPoemIntoChunks(content) {
+            const lines = content.replace(/([,.!?;:])/g, '$1<br>').split('<br>');
+            const chunks = [];
+            let currentChunk = [];
+            let wordCount = 0;
+
+            for (let line of lines) {
+                const lineWords = line.trim().split(/\s+/).length;
+                
+                if (wordCount + lineWords > 150 && currentChunk.length > 0) {
+                    chunks.push(currentChunk.join('<br>'));
+                    currentChunk = [line.trim()];
+                    wordCount = lineWords;
+                } else {
+                    if (line.trim()) {
+                        currentChunk.push(line.trim());
+                        wordCount += lineWords;
+                    }
+                }
+            }
+            
+            if (currentChunk.length > 0) {
+                chunks.push(currentChunk.join('<br>'));
+            }
+
+            return chunks;
+        }
+        
+        // Download functionality
+        downloadBtn.addEventListener('click', async () => {
+            if (!contentInput.value.trim()) {
+                alert('Please enter some content first!');
+                return;
+            }
+
+            const content = contentInput.value.trim();
+            const wordCount = content.split(/\s+/).length;
+
+            downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Generating...';
+            downloadBtn.disabled = true;
+
+            try {
+                if (currentContentType === 'poem' && wordCount > 150) {
+                    // Generate multiple images for long poems
+                    await generateMultiplePoemImages(content);
+                } else {
+                    // Temporarily remove overflow restrictions for full capture
+                    const originalOverflow = previewContainer.style.overflow;
+                    const originalMaxHeight = previewContainer.style.maxHeight;
+                    previewContainer.style.overflow = 'visible';
+                    previewContainer.style.maxHeight = 'none';
+                    
+                    // Generate single image
+                    const canvas = await html2canvas(previewContainer, {
+                        backgroundColor: null,
+                        scale: 2,
+                        useCORS: true,
+                        allowTaint: true,
+                        scrollX: 0,
+                        scrollY: 0,
+                        width: previewContainer.scrollWidth,
+                        height: previewContainer.scrollHeight,
+                        windowWidth: previewContainer.scrollWidth,
+                        windowHeight: previewContainer.scrollHeight
+                    });
+                    
+                    // Restore original styles
+                    previewContainer.style.overflow = originalOverflow;
+                    previewContainer.style.maxHeight = originalMaxHeight;
+
+                    const link = document.createElement('a');
+                    link.download = `snapframe-${currentContentType}-${Date.now()}.png`;
+                    link.href = canvas.toDataURL();
+                    link.click();
+                }
+            } catch (error) {
+                console.error('Error generating image:', error);
+                alert('Error generating image. Please try again.');
+            } finally {
+                downloadBtn.innerHTML = '<i class="fas fa-download mr-2"></i>Download Image';
+                downloadBtn.disabled = false;
+            }
+        });
+
+        // Generate multiple images for long poems
+        async function generateMultiplePoemImages(content) {
+            const chunks = splitPoemIntoChunks(content);
+
+            // Generate images for each chunk
+            for (let i = 0; i < chunks.length; i++) {
+                // Create temporary preview for this chunk
+                const tempContainer = previewContainer.cloneNode(true);
+                tempContainer.querySelector('#previewContent').innerHTML = chunks[i];
+                tempContainer.style.position = 'absolute';
+                tempContainer.style.left = '-9999px';
+                document.body.appendChild(tempContainer);
+                
+                const canvas = await html2canvas(tempContainer, {
+                    backgroundColor: null,
+                    scale: 2,
+                    useCORS: true,
+                    allowTaint: true
+                });
+
+                const link = document.createElement('a');
+                link.download = `snapframe-poem-part${i + 1}-${Date.now()}.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+                
+                // Clean up
+                document.body.removeChild(tempContainer);
+                
+                // Small delay between downloads
+                await new Promise(resolve => setTimeout(resolve, 500));
+            }
+            
+            alert(`Generated ${chunks.length} images for your poem!`);
+        }
+
+
+
+        // Dark mode toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+        
+        const currentThemeMode = localStorage.getItem('theme') || 'light';
+        html.classList.toggle('dark', currentThemeMode === 'dark');
+        
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            const newTheme = html.classList.contains('dark') ? 'dark' : 'light';
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // Content type button styling
+        document.querySelectorAll('.content-type-btn').forEach((btn, index) => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.content-type-btn').forEach(b => {
+                    b.classList.remove('border-indigo-500', 'bg-indigo-50', 'dark:bg-indigo-900/20');
+                    b.classList.add('border-gray-200', 'dark:border-slate-600');
+                });
+                btn.classList.add('border-indigo-500', 'bg-indigo-50', 'dark:bg-indigo-900/20');
+                btn.classList.remove('border-gray-200', 'dark:border-slate-600');
+            });
+        });
+
+        // Initialize first button as selected
+        document.querySelector('.content-type-btn').classList.add('border-indigo-500', 'bg-indigo-50', 'dark:bg-indigo-900/20');
+    </script>
+</body>
+</html>
