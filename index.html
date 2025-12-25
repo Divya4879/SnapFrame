@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SnapFrame - Turn Your Text Into Beautiful Images</title>
+    <meta name="description" content="Transform code, quotes, and poems into stunning shareable images. Free, instant, and beautiful.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="landing.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { 'inter': ['Inter', 'sans-serif'] },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-up': 'slideUp 0.6s ease-out',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
+        @keyframes glow { from { box-shadow: 0 0 20px rgba(99, 102, 241, 0.5); } to { box-shadow: 0 0 30px rgba(99, 102, 241, 0.8); } }
+        
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); }
+        .dark .gradient-bg { background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4c1d95 100%); }
+        
+        .glass { backdrop-filter: blur(16px); background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); }
+        .dark .glass { background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.1); }
+        
+        .feature-card { 
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(145deg, #ffffff, #f8fafc);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        .dark .feature-card { 
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border: 1px solid rgba(51, 65, 85, 0.8);
+        }
+        .feature-card:hover { 
+            transform: translateY(-8px) scale(1.02); 
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+        }
+        .dark .feature-card:hover { 
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+        }
+        
+        .section-padding { padding: 5rem 0; }
+        @media (max-width: 768px) { .section-padding { padding: 3rem 0; } }
+        
+        .text-gradient { background: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .nav-blur { backdrop-filter: blur(12px); background: rgba(255, 255, 255, 0.8); }
+        .dark .nav-blur { background: rgba(15, 23, 42, 0.8); }
+    </style>
+</head>
+<body class="font-inter bg-gray-50 dark:bg-slate-900 transition-colors duration-300">
+    <!-- Header -->
+    <header class="fixed w-full top-0 z-50 nav-blur border-b border-gray-200/20 dark:border-slate-700/50">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-camera text-white text-lg"></i>
+                    </div>
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">SnapFrame</h1>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#features" class="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">Features</a>
+                    <a href="#how-it-works" class="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">How It Works</a>
+                    <a href="#faq" class="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">FAQ</a>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <!-- Dark Mode Toggle -->
+                    <button id="theme-toggle" class="p-2 rounded-lg bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-700 transition">
+                        <i class="fas fa-moon dark:hidden"></i>
+                        <i class="fas fa-sun hidden dark:inline"></i>
+                    </button>
+                    
+                    <a href="snapshots.html" class="btn-primary text-white px-6 py-2.5 rounded-xl font-semibold">
+                        Try Now
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="gradient-bg text-white section-padding pt-32 relative overflow-hidden">
+        <div class="absolute inset-0 bg-black/10"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <div class="animate-slide-up">
+                <h1 class="text-5xl md:text-7xl font-black mb-6 leading-tight">
+                    Turn Your Words Into<br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-pink-300 to-white animate-glow">
+                        Beautiful Visuals
+                    </span>
+                </h1>
+                <p class="text-lg md:text-xl mb-10 text-gray-100 max-w-4xl mx-auto leading-relaxed">
+                     Transform code snippets, quotes, and poems into stunning shareable images.
+                     Perfect for social media, presentations, and portfolios. Completely free, forever.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
+                    <a href="snapshots.html" class="btn-primary px-10 py-4 rounded-2xl font-bold text-lg shadow-2xl">
+                        <i class="fas fa-magic mr-2"></i>
+                        Start Creating - Free
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Floating Elements -->
+        <div class="absolute top-20 left-10 w-20 h-20 bg-white/10 rounded-full animate-float"></div>
+        <div class="absolute bottom-20 right-10 w-32 h-32 bg-purple-400/20 rounded-full animate-float" style="animation-delay: -2s;"></div>
+        <div class="absolute top-1/2 left-1/4 w-16 h-16 bg-pink-400/20 rounded-full animate-float" style="animation-delay: -4s;"></div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="section-padding bg-white dark:bg-slate-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20 animate-slide-up">
+                <h2 class="text-4xl font-black text-gray-900 dark:text-white mb-6">
+                    Why Choose <span class="text-gradient">SnapFrame</span>?
+                </h2>
+                <p class="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                    Everything you need to turn text into professional, shareable images-in seconds.
+                    <br>No sign-ups. No limits. No watermarks.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="feature-card p-8 rounded-3xl group">
+                    <div class="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-download text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Instant Download</h3>
+                    <p class="text-gray-600 dark:text-gray-300 leading-relaxed">Generate and download ultra-high-quality PNG images instantly. No signup required, completely free forever.</p>
+                </div>
+
+                <div class="feature-card p-8 rounded-3xl group">
+                    <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-palette text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Beautiful Themes</h3>
+                    <p class="text-gray-600 dark:text-gray-300 leading-relaxed">Professionally designed themes optimized for different content types - code, quotes, poetry, and more.</p>
+                </div>
+
+                <div class="feature-card p-8 rounded-3xl group">
+                    <div class="w-16 h-16 bg-gradient-to-r from-red-500 to-orange-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-shield-alt text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Complete Privacy</h3>
+                    <p class="text-gray-600 dark:text-gray-300 leading-relaxed">Everything runs locally in your browser. Your content never leaves your device, ensuring complete privacy and security.</p>
+                </div>
+            </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="section-padding bg-gradient-to-br from-gray-50 to-gray-100 dark:from-slate-800 dark:to-slate-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-black text-gray-900 dark:text-white mb-6">How It Works</h2>
+                <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">Create aesthetically pleasing shareable visuals in these three simple steps</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-12">
+                <div class="text-center group">
+                    <div class="relative mb-8">
+                        <div class="w-20 h-20 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-3xl flex items-center justify-center text-2xl font-black mx-auto group-hover:scale-110 transition-transform shadow-2xl">
+                            1
+                        </div>
+                        <div class="absolute -inset-4 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-3xl opacity-20 group-hover:opacity-30 transition-opacity blur-xl"></div>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Paste Your Content</h3>
+                    <p class="text-gray-600 dark:text-gray-300 leading-relaxed">Copy and paste your code snippets, quote, or poem. Select the content type and programming language (as applicable).</p>
+                </div>
+                
+                <div class="text-center group">
+                    <div class="relative mb-8">
+                        <div class="w-20 h-20 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-3xl flex items-center justify-center text-2xl font-black mx-auto group-hover:scale-110 transition-transform shadow-2xl">
+                            2
+                        </div>
+                        <div class="absolute -inset-4 bg-gradient-to-r from-green-500 to-emerald-600 rounded-3xl opacity-20 group-hover:opacity-30 transition-opacity blur-xl"></div>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Choose Your Style</h3>
+                    <p class="text-gray-600 dark:text-gray-300 leading-relaxed">Pick from beautiful pre-designed themes. Each theme is optimized for different content types and platforms.</p>
+                </div>
+                
+                <div class="text-center group">
+                    <div class="relative mb-8">
+                        <div class="w-20 h-20 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-3xl flex items-center justify-center text-2xl font-black mx-auto group-hover:scale-110 transition-transform shadow-2xl">
+                            3
+                        </div>
+                        <div class="absolute -inset-4 bg-gradient-to-r from-purple-500 to-pink-600 rounded-3xl opacity-20 group-hover:opacity-30 transition-opacity blur-xl"></div>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Download & Share</h3>
+                    <p class="text-gray-600 dark:text-gray-300 leading-relaxed">Generate your image instantly and download in ultra-high quality. Share on social media or use in presentations.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+  
+        
+        <!-- Decorative Elements -->
+        <div class="absolute top-10 left-10 w-32 h-32 bg-white/5 rounded-full animate-float"></div>
+        <div class="absolute bottom-10 right-10 w-24 h-24 bg-purple-400/20 rounded-full animate-float" style="animation-delay: -3s;"></div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="section-padding bg-white dark:bg-slate-900">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-black text-gray-900 dark:text-white mb-6">
+                    Frequently Asked <span class="text-gradient">Questions</span>
+                </h2>
+                <p class="text-lg text-gray-600 dark:text-gray-300">Everything you need to know about SnapFrame</p>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="faq-item bg-gray-50 dark:bg-slate-800 rounded-2xl border border-gray-200 dark:border-slate-700 hover:shadow-lg transition-all">
+                    <button class="faq-question w-full p-6 text-left flex items-center justify-between">
+                        <div class="flex items-center">
+                            <i class="fas fa-question-circle text-indigo-500 mr-3"></i>
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white">Is SnapFrame really free?</h3>
+                        </div>
+                        <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
+                    </button>
+                    <div class="faq-answer hidden px-6 pb-6">
+                        <p class="text-gray-600 dark:text-gray-300 leading-relaxed">Yes, completely free! No hidden costs, no watermarks, no signup required. Create unlimited images forever.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item bg-gray-50 dark:bg-slate-800 rounded-2xl border border-gray-200 dark:border-slate-700 hover:shadow-lg transition-all">
+                    <button class="faq-question w-full p-6 text-left flex items-center justify-between">
+                        <div class="flex items-center">
+                            <i class="fas fa-palette text-green-500 mr-3"></i>
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white">What content types are supported?</h3>
+                        </div>
+                        <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
+                    </button>
+                    <div class="faq-answer hidden px-6 pb-6">
+                        <p class="text-gray-600 dark:text-gray-300 leading-relaxed">Create images from code snippets (JavaScript, Python, C++, Java, Go, TypeScript, HTML, CSS, and more), inspirational quotes, and poetry with beautiful formatting.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item bg-gray-50 dark:bg-slate-800 rounded-2xl border border-gray-200 dark:border-slate-700 hover:shadow-lg transition-all">
+                    <button class="faq-question w-full p-6 text-left flex items-center justify-between">
+                        <div class="flex items-center">
+                            <i class="fas fa-download text-blue-500 mr-3"></i>
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white">What image format do I get?</h3>
+                        </div>
+                        <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
+                    </button>
+                    <div class="faq-answer hidden px-6 pb-6">
+                        <p class="text-gray-600 dark:text-gray-300 leading-relaxed">High-quality PNG images at 2x resolution, perfect for social media sharing, presentations, and portfolios.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item bg-gray-50 dark:bg-slate-800 rounded-2xl border border-gray-200 dark:border-slate-700 hover:shadow-lg transition-all">
+                    <button class="faq-question w-full p-6 text-left flex items-center justify-between">
+                        <div class="flex items-center">
+                            <i class="fas fa-shield-alt text-purple-500 mr-3"></i>
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white">Is my content private?</h3>
+                        </div>
+                        <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
+                    </button>
+                    <div class="faq-answer hidden px-6 pb-6">
+                        <p class="text-gray-600 dark:text-gray-300 leading-relaxed">Absolutely! Everything runs locally in your browser. Your content never leaves your device or gets stored anywhere.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item bg-gray-50 dark:bg-slate-800 rounded-2xl border border-gray-200 dark:border-slate-700 hover:shadow-lg transition-all">
+                    <button class="faq-question w-full p-6 text-left flex items-center justify-between">
+                        <div class="flex items-center">
+                            <i class="fas fa-paint-brush text-pink-500 mr-3"></i>
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white">Can I choose different themes?</h3>
+                        </div>
+                        <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
+                    </button>
+                    <div class="faq-answer hidden px-6 pb-6">
+                        <p class="text-gray-600 dark:text-gray-300 leading-relaxed">Yes! Choose from multiple professionally designed themes including Ocean, Sunset, Forest, Midnight, Love (with hearts), and Snow (animated) backgrounds.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item bg-gray-50 dark:bg-slate-800 rounded-2xl border border-gray-200 dark:border-slate-700 hover:shadow-lg transition-all">
+                    <button class="faq-question w-full p-6 text-left flex items-center justify-between">
+                        <div class="flex items-center">
+                            <i class="fas fa-ruler text-orange-500 mr-3"></i>
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white">Are there content length limits?</h3>
+                        </div>
+                        <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
+                    </button>
+                    <div class="faq-answer hidden px-6 pb-6">
+                        <p class="text-gray-600 dark:text-gray-300 leading-relaxed">Poems over 150 words automatically split into multiple images. Quotes work best under 30 words. Code snippets have no length limits and display in a single image.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 dark:bg-black text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-center space-x-4">
+                <div class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-camera text-white text-sm"></i>
+                    </div>
+                    <h3 class="text-xl font-bold">SnapFrame</h3>
+                </div>
+                <div class="text-gray-400 italic">
+                    Because your words deserve a frame.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // FAQ Toggle Functionality
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const faqItem = question.parentElement;
+                const answer = faqItem.querySelector('.faq-answer');
+                const chevron = question.querySelector('.fa-chevron-down');
+                
+                // Close all other FAQ items
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    if (item !== faqItem) {
+                        item.querySelector('.faq-answer').classList.add('hidden');
+                        item.querySelector('.fa-chevron-down').style.transform = 'rotate(0deg)';
+                    }
+                });
+                
+                // Toggle current FAQ item
+                answer.classList.toggle('hidden');
+                chevron.style.transform = answer.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+            });
+        });
+        
+        // Dark Mode Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+        
+        // Check for saved theme preference or default to light mode
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        html.classList.toggle('dark', currentTheme === 'dark');
+        
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            const newTheme = html.classList.contains('dark') ? 'dark' : 'light';
+            localStorage.setItem('theme', newTheme);
+        });
+        
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+        
+        // Scroll Animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // Observe elements for animation
+        document.querySelectorAll('.animate-slide-up').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+        
+        // Mobile Menu Toggle (if needed)
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        if (mobileMenuToggle && mobileMenu) {
+            mobileMenuToggle.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+    </script>
+</body>
+</html>
