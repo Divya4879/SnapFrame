@@ -1,0 +1,202 @@
+
+
+/* Theme Styles */
+.theme-ocean { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+.theme-sunset { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; }
+.theme-forest { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; }
+.theme-midnight { background: linear-gradient(135deg, #2c3e50 0%, #000000 100%); color: white; }
+.theme-minimal { background: #ffffff; color: #1f2937; border: 2px solid #e5e7eb; }
+
+.theme-love {
+    background-image: url('HD-wallpaper-red-glare-hearts-red-glitter-background-creative-love-concepts-abstract-hearts-red-hearts.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-love #previewContent {
+    background: rgba(252, 231, 243, 0.9);
+    padding: 30px;
+    border-radius: 15px;
+    color: #ec4899;
+    text-shadow: none;
+}
+
+.theme-snow {
+    background-image: url('ba5b613b625e1013284f588943cd6e15.gif');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-snow #previewContent {
+    background: rgba(219, 234, 254, 0.9);
+    padding: 30px;
+    border-radius: 15px;
+    color: #1e40af;
+    text-shadow: none;
+}
+
+/* Code Editor Styles */
+.code-editor {
+    border-radius: 12px;
+    overflow: hidden;
+    font-family: 'JetBrains Mono', monospace;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+/* VS Code Dark Theme */
+.code-editor {
+    background: #2d3748;
+}
+
+.code-editor.github-theme {
+    background: #0d1117;
+}
+
+.code-editor.monokai-theme {
+    background: #272822;
+}
+
+.code-editor.dracula-theme {
+    background: #282a36;
+}
+
+.code-header {
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.code-editor .code-header {
+    background: #1a202c;
+}
+
+.code-editor.github-theme .code-header {
+    background: #010409;
+}
+
+.code-editor.monokai-theme .code-header {
+    background: #1e1f1c;
+}
+
+.code-editor.dracula-theme .code-header {
+    background: #21222c;
+}
+
+.code-dots {
+    display: flex;
+    gap: 6px;
+}
+
+.code-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.code-dot.red { background: #ff5f56; }
+.code-dot.yellow { background: #ffbd2e; }
+.code-dot.green { background: #27ca3f; }
+
+.code-lang {
+    color: #a0aec0;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.code-content {
+    padding: 20px;
+    font-size: 14px;
+    line-height: 1.5;
+    overflow-x: auto;
+    text-align: left;
+}
+
+.code-content pre {
+    margin: 0;
+    padding: 0;
+    white-space: pre;
+    text-align: left;
+}
+
+.code-content code {
+    font-family: 'JetBrains Mono', monospace;
+    white-space: pre;
+    text-align: left;
+    display: block;
+}
+
+.code-editor .code-content {
+    background: #2d3748;
+    color: #e2e8f0;
+}
+
+.code-editor.github-theme .code-content {
+    background: #0d1117;
+    color: #c9d1d9;
+}
+
+.code-editor.monokai-theme .code-content {
+    background: #272822;
+    color: #f8f8f2;
+}
+
+.code-editor.dracula-theme .code-content {
+    background: #282a36;
+    color: #f8f8f2;
+}
+
+/* Preview Card */
+.preview-card {
+    min-height: 400px;
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+
+.preview-card .code-editor {
+    text-align: left;
+}
+
+/* Typography */
+.poem-elegant { 
+    font-family: 'Playfair Display', serif; 
+    font-style: italic; 
+    line-height: 1.8; 
+    font-weight: bold; 
+}
+
+.quote-modern { 
+    font-family: 'Inter', sans-serif; 
+    font-weight: 500; 
+    font-size: 1.5rem; 
+    line-height: 1.6; 
+}
+
+.code-mono { 
+    font-family: 'JetBrains Mono', monospace; 
+    font-size: 0.9rem; 
+    line-height: 1.5; 
+}
+
+/* Navigation */
+.nav-blur { 
+    backdrop-filter: blur(12px); 
+    background: rgba(255, 255, 255, 0.8); 
+}
+
+.dark .nav-blur { 
+    background: rgba(15, 23, 42, 0.8); 
+}
+
