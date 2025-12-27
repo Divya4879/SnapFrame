@@ -223,20 +223,20 @@
         <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center py-4">
                 <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
-                        <i class="fas fa-camera text-white text-lg"></i>
+                    <div class="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-camera text-white text-sm sm:text-lg"></i>
                     </div>
-                    <a href="index.html" class="text-2xl font-bold text-gray-900 dark:text-white">SnapFrame</a>
+                    <a href="index.html" class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">SnapFrame</a>
                 </div>
                 
-                <div class="flex items-center space-x-4">
+                <div class="flex items-center space-x-2 sm:space-x-4">
                     <button id="theme-toggle" class="p-2 rounded-lg bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-700 transition">
-                        <i class="fas fa-moon dark:hidden"></i>
-                        <i class="fas fa-sun hidden dark:inline"></i>
+                        <i class="fas fa-moon dark:hidden text-sm"></i>
+                        <i class="fas fa-sun hidden dark:inline text-sm"></i>
                     </button>
                     
-                    <a href="index.html" class="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
-                        <i class="fas fa-home mr-2"></i>Home
+                    <a href="index.html" class="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition text-sm sm:text-base">
+                        <i class="fas fa-home mr-1 sm:mr-2"></i><span class="hidden sm:inline">Home</span>
                     </a>
                 </div>
             </div>
@@ -245,39 +245,39 @@
 
     <!-- Main Content -->
     <main class="pt-20 min-h-screen">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div class="text-center mb-12">
-                <h1 class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 mb-6">Create Your Snapshot</h1>
-                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">Transform your content into beautiful shareable images with professional styling</p>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+            <div class="text-center mb-8 sm:mb-12">
+                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 mb-4 sm:mb-6">Create Your Snapshot</h1>
+                <p class="text-base sm:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto px-4 sm:px-0">Transform your content into beautiful shareable images with professional styling</p>
             </div>
 
-            <div class="grid lg:grid-cols-2 gap-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
                 <!-- Input Panel -->
-                <div class="bg-white/80 backdrop-blur-sm dark:bg-slate-800/80 rounded-3xl p-8 shadow-2xl border border-white/20 dark:border-slate-700/50">
-                    <h2 class="text-3xl font-black mb-8 text-gray-900 dark:text-white bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Content & Settings</h2>
+                <div class="bg-white/80 backdrop-blur-sm dark:bg-slate-800/80 rounded-3xl p-6 sm:p-8 shadow-2xl border border-white/20 dark:border-slate-700/50">
+                    <h2 class="text-2xl sm:text-3xl font-black mb-6 sm:mb-8 text-gray-900 dark:text-white bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Content & Settings</h2>
                     
                     <!-- Content Type Selection -->
                     <div class="mb-6">
                         <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Content Type</label>
-                        <div class="grid grid-cols-3 gap-3">
+                        <div class="grid grid-cols-3 gap-2 sm:gap-3">
                             <label class="cursor-pointer">
                                 <input type="radio" name="contentType" value="quote" class="sr-only" checked>
-                                <div class="content-type-btn p-4 rounded-xl border-2 border-gray-200 dark:border-slate-600 hover:border-indigo-500 transition text-center">
-                                    <i class="fas fa-quote-left text-2xl text-indigo-500 mb-2"></i>
-                                    <div class="font-semibold text-gray-900 dark:text-white">Quote</div>
+                                <div class="content-type-btn p-3 sm:p-4 rounded-xl border-2 border-gray-200 dark:border-slate-600 hover:border-indigo-500 transition text-center">
+                                    <i class="fas fa-quote-left text-lg sm:text-2xl text-indigo-500 mb-1 sm:mb-2"></i>
+                                    <div class="font-semibold text-gray-900 dark:text-white text-xs sm:text-base">Quote</div>
                                 </div>
                             </label>
                             <label class="cursor-pointer">
                                 <input type="radio" name="contentType" value="poem" class="sr-only">
-                                <div class="content-type-btn p-4 rounded-xl border-2 border-gray-200 dark:border-slate-600 hover:border-indigo-500 transition text-center">
-                                    <i class="fas fa-feather-alt text-2xl text-purple-500 mb-2"></i>
-                                    <div class="font-semibold text-gray-900 dark:text-white">Poem</div>
+                                <div class="content-type-btn p-3 sm:p-4 rounded-xl border-2 border-gray-200 dark:border-slate-600 hover:border-indigo-500 transition text-center">
+                                    <i class="fas fa-feather-alt text-lg sm:text-2xl text-purple-500 mb-1 sm:mb-2"></i>
+                                    <div class="font-semibold text-gray-900 dark:text-white text-xs sm:text-base">Poem</div>
                                 </div>
                             </label>
                             <label class="cursor-pointer">
                                 <input type="radio" name="contentType" value="code" class="sr-only">
-                                <div class="content-type-btn p-4 rounded-xl border-2 border-gray-200 dark:border-slate-600 hover:border-indigo-500 transition text-center">
-                                    <i class="fas fa-code text-2xl text-green-500 mb-2"></i>
+                                <div class="content-type-btn p-3 sm:p-4 rounded-xl border-2 border-gray-200 dark:border-slate-600 hover:border-indigo-500 transition text-center">
+                                    <i class="fas fa-code text-lg sm:text-2xl text-green-500 mb-1 sm:mb-2"></i>
                                     <div class="font-semibold text-gray-900 dark:text-white">Code</div>
                                 </div>
                             </label>
@@ -309,33 +309,33 @@
                         <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Your Content</label>
                         <textarea id="contentInput" 
                                   placeholder="Enter your quote, poem, or code snippet here..."
-                                  class="w-full h-40 p-4 rounded-xl border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white resize-none font-mono text-sm"
+                                  class="w-full h-32 sm:h-40 p-3 sm:p-4 rounded-xl border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white resize-none font-mono text-sm"
                                   spellcheck="false"></textarea>
                     </div>
 
                     <!-- Theme Selection -->
                     <div class="mb-6">
                         <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Theme</label>
-                        <div id="themeGrid" class="grid grid-cols-2 gap-3">
+                        <div id="themeGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
                             <!-- Themes will be populated by JavaScript -->
                         </div>
                     </div>
 
                     <!-- Download Button -->
-                    <button id="downloadBtn" class="w-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white py-4 rounded-xl font-bold text-lg hover:from-indigo-600 hover:to-purple-700 transition shadow-lg">
+                    <button id="downloadBtn" class="w-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg hover:from-indigo-600 hover:to-purple-700 transition shadow-lg">
                         <i class="fas fa-download mr-2"></i>
                         Download Image
                     </button>
                 </div>
 
                 <!-- Preview Panel -->
-                <div class="bg-white/80 backdrop-blur-sm dark:bg-slate-800/80 rounded-3xl p-8 shadow-2xl border border-white/20 dark:border-slate-700/50">
-                    <h2 class="text-3xl font-black mb-8 text-gray-900 dark:text-white bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Preview</h2>
+                <div class="bg-white/80 backdrop-blur-sm dark:bg-slate-800/80 rounded-3xl p-6 sm:p-8 shadow-2xl border border-white/20 dark:border-slate-700/50">
+                    <h2 class="text-2xl sm:text-3xl font-black mb-6 sm:mb-8 text-gray-900 dark:text-white bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Preview</h2>
                     
                     <div class="flex justify-center">
-                        <div id="previewContainer" class="preview-card theme-minimal quote-modern">
+                        <div id="previewContainer" class="preview-card theme-minimal quote-modern w-full max-w-md sm:max-w-lg">
                             <div id="previewContent" class="text-center">
-                                <p>Enter your content to see the preview...</p>
+                                <p class="text-sm sm:text-base">Enter your content to see the preview...</p>
                             </div>
                         </div>
                     </div>

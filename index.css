@@ -67,6 +67,61 @@
     background: rgba(15, 23, 42, 0.8);
 }
 
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+    .section-padding {
+        padding: 3rem 0;
+    }
+    
+    .feature-card {
+        margin-bottom: 1.5rem;
+    }
+    
+    .hero-title {
+        font-size: 2.5rem !important;
+        line-height: 1.2;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem !important;
+        padding: 0 1rem;
+    }
+    
+    .btn-primary {
+        width: 100%;
+        text-align: center;
+        padding: 1rem 2rem;
+    }
+    
+    .nav-links {
+        display: none;
+    }
+    
+    .mobile-menu {
+        display: block;
+    }
+}
+
+@media (max-width: 640px) {
+    .hero-title {
+        font-size: 2rem !important;
+    }
+    
+    .feature-card {
+        padding: 1.5rem;
+    }
+    
+    .faq-item {
+        margin-bottom: 1rem;
+    }
+    
+    .step-number {
+        width: 3rem;
+        height: 3rem;
+        font-size: 1.2rem;
+    }
+}
+
 /* Animations */
 @keyframes glow {
     0%, 100% { text-shadow: 0 0 20px rgba(255, 255, 255, 0.5); }
